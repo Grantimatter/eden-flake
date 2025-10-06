@@ -16,7 +16,7 @@
     packages.default = edenPkg;
   }
   ) // {
-    homeManagerModules.default = { config, pkgs, lib, ...}: import ./module.nix {inherit config pkgs lib self; };
+    homeModules.default = { config, pkgs, lib, ...}: import ./module.nix {inherit config pkgs lib self; };
     
     # overlays.default = final: prev: {
     #   eden = self.packages.${final.system}.default;
