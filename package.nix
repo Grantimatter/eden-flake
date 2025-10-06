@@ -255,7 +255,7 @@ stdenv.mkDerivation (finalAttrs: {
     # enable some optional features
     (lib.cmakeBool "YUZU_USE_QT_WEB_ENGINE" true)
     (lib.cmakeBool "YUZU_USE_QT_MULTIMEDIA" true)
-    (lib.cmakeBool "USE_DISCORD_PRESENCE" false) # Build failure with tz when enabled
+    (lib.cmakeBool "USE_DISCORD_PRESENCE" true)
 
     # We dont want to bother upstream with potentially outdated compat reports
     (lib.cmakeBool "YUZU_ENABLE_COMPATIBILITY_REPORTING" false)
@@ -283,21 +283,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   postInstall = ''
     install -Dm44 $src/dist/72-yuzu-input.rules $out/lib/udev/rules.d/72-yuzu-input.rules
-    # install -D $src/dist/dev.eden_emu.eden.desktop $out/dist/dev.eden_emu.eden.desktop
   '';
-
-  # desktopItems = [
-  #   (makeDesktopItem {
-  #     name = "eden";
-  #     desktopName = "Eden";
-  #     exec = "eden";
-  #     icon = "eden/dist/dev.eden_emu.eden.svg";
-  #     type = "Application";
-  #     startupWMClass = "eden";
-  #     terminal = false;
-  #     keywords = ["switch" "emulator" "game"];
-  #   })
-  # ];
 
   meta = {
     description = "Nintendo Switch video game console emulator";
