@@ -2,23 +2,19 @@
   description = "Eden Emulator";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
   outputs = { self, nixpkgs }:
   let
-    supportedSystems = [
-      "x86_64-linux"
-      "aarch64-linux"
-      "aarch64-darwin"
-    ];
-
     forAllSystems = f:
-      nixpkgs.lib.genAttrs supportedSystems (
+      nixpkgs.lib.genAttrs ["x86_64-linux"] (
         system: f nixpkgs.legacyPackages.${system}
     );
   in
   {
+    nixosModules.eden = import ./default.nix;
+    nixosModules.default = self.nixosModules.eden;
     packages = forAllSystems (pkgs: import ./default.nix {inherit pkgs;});
   };
 }
