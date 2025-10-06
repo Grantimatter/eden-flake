@@ -39,7 +39,6 @@
   mbedtls,
   xbyak,
   zydis,
-  makeDesktopItem,
 }:
 let
   inherit (qt6)
@@ -267,7 +266,6 @@ stdenv.mkDerivation (finalAttrs: {
 
     # Dev
     (lib.cmakeBool "SIRIT_USE_SYSTEM_SPIRV_HEADERS" true)
-    # "-DSIRIT_USE_SYSTEM_SPIRV_HEADERS=ON"
     (lib.cmakeFeature "CMAKE_CXX_FLAGS" "-Wno-error -Wno-array-parameter -Wno-stringop-overflow")
   ];
 
