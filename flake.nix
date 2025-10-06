@@ -10,7 +10,7 @@
   flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
-      edenPkg = pkgs.callPackage ./package.nix { };
+      edenPkg = pkgs.callPackage ./default.nix { };
     in
   {
     packages.default = edenPkg;
