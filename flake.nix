@@ -15,12 +15,10 @@
 
     forAllSystems = f:
       nixpkgs.lib.genAttrs supportedSystems (
-      system: f nixpkgs.legacyPackages.${system}
+        system: f nixpkgs.legacyPackages.${system}
     );
   in
   {
-    # packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
-    # packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
     packages = forAllSystems (pkgs: import ./default.nix {inherit pkgs;});
   };
 }

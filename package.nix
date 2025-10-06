@@ -39,6 +39,7 @@
   mbedtls,
   xbyak,
   zydis,
+  makeDesktopItem,
 }:
 let
   inherit (qt6)
@@ -65,34 +66,6 @@ let
     buildCommand = ''
       cp $src/compatibility_list.json $out
     '';
-  };
-
-  frozen = stdenv.mkDerivation {
-    pname = "frozen";
-    version = "61dce5a";
-    src = fetchFromGitHub {
-      owner = "serge-sans-paille";
-      repo = "frozen";
-      rev = "61dce5ae18ca59931e27675c468e64118aba8744";
-      hash = "sha256-zIczBSRDWjX9hcmYWYkbWY3NAAQwQtKhMTeHlYp4BKk=";
-    };
-
-    nativeBuildInputs = [
-      cmake
-    ];
-
-    # installPhase = ''
-    #   runHook preInstall
-    #   mkdir -p $out/include
-    #   cp -r include/frozen/* $out/include
-    #   runHook postInstall
-    # '';
-
-    # preInstall = ''
-    #   echo ---- FROZEN ----
-    #   ls $out
-    #   echo ---- FROZEN ----
-    # '';
   };
 
   quazip = stdenv.mkDerivation {
@@ -131,12 +104,11 @@ let
 
     nativeBuildInputs = [
       cmake
-      fmt_11
     ];
 
-    # buildInputs = [
-    #   fmt
-    # ];
+    buildInputs = [
+      fmt_11
+    ];
   };
 
   sirit = stdenv.mkDerivation rec {
@@ -284,7 +256,7 @@ stdenv.mkDerivation (finalAttrs: {
     # enable some optional features
     (lib.cmakeBool "YUZU_USE_QT_WEB_ENGINE" true)
     (lib.cmakeBool "YUZU_USE_QT_MULTIMEDIA" true)
-    # (lib.cmakeBool "USE_DISCORD_PRESENCE" true)
+    (lib.cmakeBool "USE_DISCORD_PRESENCE" false) # Build failure with tz when enabled
 
     # We dont want to bother upstream with potentially outdated compat reports
     (lib.cmakeBool "YUZU_ENABLE_COMPATIBILITY_REPORTING" false)
@@ -295,7 +267,7 @@ stdenv.mkDerivation (finalAttrs: {
 
     # Dev
     (lib.cmakeBool "SIRIT_USE_SYSTEM_SPIRV_HEADERS" true)
-    "-DSIRIT_USE_SYSTEM_SPIRV_HEADERS=ON"
+    # "-DSIRIT_USE_SYSTEM_SPIRV_HEADERS=ON"
     (lib.cmakeFeature "CMAKE_CXX_FLAGS" "-Wno-error -Wno-array-parameter -Wno-stringop-overflow")
   ];
 
@@ -313,13 +285,28 @@ stdenv.mkDerivation (finalAttrs: {
 
   postInstall = ''
     install -Dm44 $src/dist/72-yuzu-input.rules $out/lib/udev/rules.d/72-yuzu-input.rules
+    # install -D $src/dist/dev.eden_emu.eden.desktop $out/dist/dev.eden_emu.eden.desktop
   '';
 
-  # installPhase = ''
-  #   runHook preInstall
-  #   # echo ${mbedtls}
-  #   mkdir -p $out/bin
-  #   cp build/bin/eden  $out/bin
-  #   runHook postInstall
-  # '';
+  # desktopItems = [
+  #   (makeDesktopItem {
+  #     name = "eden";
+  #     desktopName = "Eden";
+  #     exec = "eden";
+  #     icon = "eden/dist/dev.eden_emu.eden.svg";
+  #     type = "Application";
+  #     startupWMClass = "eden";
+  #     terminal = false;
+  #     keywords = ["switch" "emulator" "game"];
+  #   })
+  # ];
+
+  meta = {
+    description = "Nintendo Switch video game console emulator";
+    homepage = "https://eden-emu.dev/";
+    downloadPage = "https://eden-emu.dev/download";
+    changelog = "https://github.com/eden-emulator/Releases/releases";
+    mainProgram = "eden";
+    desktopFileName = "dist/dev.eden_emu.eden.desktop";
+  };
 })
