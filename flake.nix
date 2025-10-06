@@ -19,7 +19,7 @@
     # overlays.default = final: prev: {
     #   eden = self.packages.${final.system}.default;
     # };
-    nixosModules.default = { config, pkgs, ...}: import ./default.nix {inherit config pkgs self; };
+    nixosModules.default = { pkgs, ...}: import ./default.nix {inherit pkgs; };
     # nixosModules.eden = import ./default.nix;
     # nixosModules.default = self.nixosModules.eden;
     # packages = forAllSystems (pkgs: import ./default.nix {inherit pkgs;});
