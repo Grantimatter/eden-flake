@@ -13,8 +13,12 @@
     );
   in
   {
-    nixosModules.eden = import ./default.nix;
-    nixosModules.default = self.nixosModules.eden;
+    # nixosModules.eden = import ./default.nix;
+    # nixosModules.default = self.nixosModules.eden;
     packages = forAllSystems (pkgs: import ./default.nix {inherit pkgs;});
+
+    nixosModules = {
+      default = self.packages."x86_64-linux";
+    };
   };
 }
