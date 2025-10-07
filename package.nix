@@ -112,12 +112,12 @@ let
 
   sirit = stdenv.mkDerivation rec {
     pname = "sirit";
-    version = "v1.0.1";
+    version = "v1.0.2";
     src = fetchFromGitHub {
       owner = "eden-emulator";
       repo = "sirit";
       rev = "${version}";
-      hash = "sha256-Uw/Z9j6Pvynef2SU5B79Ciey6Q0/FqADR971SuRfIQY=";
+      hash = "sha256-0wjpQm8tWHeEebSiRGs7b8LYcA2d4MEbHuffP2eSNGU=";
     };
 
     nativeBuildInputs = [
