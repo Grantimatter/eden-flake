@@ -1,7 +1,13 @@
 name: "Cachix"
 on:
   pull_request:
+    types:
+      - opened
+    branches:
+      - 'main'
   push:
+    branches:
+      - 'main'
 jobs:
   tests:
     runs-on: ubuntu-latest
