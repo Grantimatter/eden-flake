@@ -14,10 +14,21 @@ A nix flake for [Eden](https://git.eden-emu.dev/eden-emu/eden).
   };
   ```
 
-2. Enable in your home-manager config
+2. Enable in your nixos or home-manager config
+  *nixos*
   ```nix
+  # configuration.nix
+  imports = [
+    inputs.eden.nixosModules.default
+  ];
+
+  programs.eden.enable = true;
+  ```
+
+  *home-manger*
+  ```nix
+  # home.nix
   {
-    # home.nix
     imports = [
       inputs.eden.homeModules.default
     ];
