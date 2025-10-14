@@ -6,12 +6,14 @@ A nix flake for [Eden](https://git.eden-emu.dev/eden-emu/eden).
 1. Add this flake to the inputs of your `flake.nix`.
   ```nix
   # flake.nix
-  inputs = {
-    eden = {
-      url = "github:grantimatter/eden-flake"
-      inputs.nixpkgs.follows = "nixpkgs";
+  {
+    inputs = {
+      eden = {
+        url = "github:grantimatter/eden-flake"
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
-  };
+  }
   ```
 
 2. Enable in your nixos or home-manager config
@@ -19,11 +21,13 @@ A nix flake for [Eden](https://git.eden-emu.dev/eden-emu/eden).
   *nixos*
   ```nix
   # configuration.nix
-  imports = [
-    inputs.eden.nixosModules.default
-  ];
+  {
+    imports = [
+      inputs.eden.nixosModules.default
+    ];
 
-  programs.eden.enable = true;
+    programs.eden.enable = true;
+  }
   ```
 
   *home-manger*
