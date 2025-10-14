@@ -15,6 +15,7 @@ A nix flake for [Eden](https://git.eden-emu.dev/eden-emu/eden).
   ```
 
 2. Enable in your nixos or home-manager config
+
   *nixos*
   ```nix
   # configuration.nix
@@ -37,7 +38,14 @@ A nix flake for [Eden](https://git.eden-emu.dev/eden-emu/eden).
   }
   ```
 
-3. Rebuild your Home Manager configuration
+3. Rebuild your configuration
+
+  *nixos*
+  ```sh
+  $ nixos-rebuild switch
+  ```
+
+  *home-manager*
   ```sh
   $ home-manager switch
   ```
