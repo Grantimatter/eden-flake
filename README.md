@@ -3,7 +3,7 @@
 A nix flake for [Eden](https://git.eden-emu.dev/eden-emu/eden).
 
 ## Installation
-1. Add this flake to the inputs of your `flake.nix`.
+Add this flake to the inputs of your `flake.nix`.
   ```nix
   # flake.nix
   {
@@ -16,43 +16,41 @@ A nix flake for [Eden](https://git.eden-emu.dev/eden-emu/eden).
   }
   ```
 
-2. Enable in your nixos or home-manager config
+### NixOS
+```nix
+# configuration.nix
+{
+  imports = [
+    inputs.eden.nixosModules.default
+  ];
 
-  *nixos*
-  ```nix
-  # configuration.nix
-  {
-    imports = [
-      inputs.eden.nixosModules.default
-    ];
+  programs.eden.enable = true;
+}
 
-    programs.eden.enable = true;
-  }
-  ```
+```
 
-  *home-manger*
-  ```nix
-  # home.nix
-  {
-    imports = [
-      inputs.eden.homeModules.default
-    ];
+Rebuild your NixOS configuration
+```sh
+$ nixos-rebuild switch
+```
 
-    programs.eden.enable = true;
-  }
-  ```
+### home-manager
+```nix
+# home.nix
+{
+  imports = [
+    inputs.eden.homeModules.default
+  ];
 
-3. Rebuild your configuration
+  programs.eden.enable = true;
+}
+```
 
-  *nixos*
-  ```sh
-  $ nixos-rebuild switch
-  ```
+Rebuild your home-mananger configuration
 
-  *home-manager*
-  ```sh
-  $ home-manager switch
-  ```
+```sh
+$ home-manager switch
+```
 
 ## Usage
 Run `$ eden` or run from the .desktop entry
