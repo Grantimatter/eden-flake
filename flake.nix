@@ -18,5 +18,8 @@
   ) // {
     homeModules.default = { config, pkgs, lib, ...}: import ./homeModule.nix { inherit config pkgs lib self; };
     nixosModules.default = { config, pkgs, lib, ...}: import ./nixosModule.nix { inherit config pkgs lib self; };
+    overlays.default = final: prev: {
+      eden = final.qt6Packages.callPackage ./package.nix {  };
+    };
   };
 }
