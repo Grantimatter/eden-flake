@@ -159,6 +159,21 @@ let
     };
   });
 
+  frozen = stdenv.mkDerivation (finalAttrs: rec {
+  pname = "frozen";
+  version = "61dce5ae18ca59931e27675c468e64118aba8744";
+  src = fetchFromGitHub {
+    owner = "serge-sans-paille";
+    repo = "frozen";
+    rev = "${version}";
+    hash = "sha256-zIczBSRDWjX9hcmYWYkbWY3NAAQwQtKhMTeHlYp4BKk=";
+  };
+
+  nativeBuildInputs = [
+    cmake
+  ];
+});
+
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "eden";
@@ -167,8 +182,8 @@ stdenv.mkDerivation (finalAttrs: {
     domain = "git.eden-emu.dev";
     owner = "eden-emu";
     repo = "eden";
-    rev = "a52ddf78a6147e3fefd15be2fe60178d7dc07138";
-    hash = "sha256-uHFZpwd7R29y8MZLS8q82KUIH6w0UXkxhop/ptsTdGk=";
+    rev = "7751f86c1b867f7179b3b561ab8b001873c5d381";
+    hash = "sha256-THypvgdy3R7KyjeBLuO8+EVMDEIMafwXk0YVToJ2Ols=";
     fetchSubmodules = true;
   };
 
@@ -180,6 +195,7 @@ stdenv.mkDerivation (finalAttrs: {
     qttools
     wrapQtAppsHook
     mcl
+    frozen
   ];
 
   buildInputs = [
