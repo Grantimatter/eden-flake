@@ -23,64 +23,72 @@ Add this flake to the inputs of your `flake.nix`.
 
 ### NixOS
 ```nix
-# configuration.nix
 {
   imports = [
     inputs.eden.nixosModules.default
   ];
 
-  programs.eden.enable = true;
+  programs.eden = {
+    enable = true;
+    enableCache = true; # Optional: Enable cache (see Cachix section)
+  };
 }
-
-```
-
-Rebuild your NixOS configuration
-```sh
-$ nixos-rebuild switch
 ```
 
 ### home-manager
 ```nix
-# home.nix
 {
   imports = [
     inputs.eden.homeModules.default
   ];
 
-  programs.eden.enable = true;
+  programs.eden = {
+    enable = true;
+    enableCache = true; # Optional: Enable cache (see Cachix section)
+  };
 }
 ```
 
-Rebuild your home-mananger configuration
-
-```sh
-$ home-manager switch
-```
-
 ### Cachix
-In order to download cached builds of this flake from Cachix, you will need to add the eden-flake Cachix as a substituter in your flake or nix config.
+In order to download cached builds of this flake from Cachix, you will need to add the eden-flake substituter in your flake or nix config.
 
-This will allow you to download a cached, already-built version of eden without having to manually build it each time the flake updates.
+This will allow you to download binaries built by CI instead of building them yourself.
 
 > [!IMPORTANT]
 > Remove `inputs.nixpkgs.follows = ...` from your eden-flake input, if you have it set. Overriding the nixpkgs input defeats the purpose of the cache.
 
-#### Flake Setup
+#### Module-Based Setup (Recommended for NixOS/home-manager)
+
+> [!IMPORTANT]
+> You must rebuild your system or home-manager once with just `programs.eden.enableCache = true;` set so the substituter is present when Eden is derived.
+
+**Step 1:** Enable the cache only (without installing Eden yet):
 ```nix
-# flake.nix
-nixConfig = {
-    extra-substituters = ["https://eden-flake.cachix.org"];
-    extra-trusted-public-keys = ["eden-flake.cachix.org-1:9orwA5vFfBgb67pnnpsxBqILQlb2UI2grWt4zHHAxs8="];
+programs.eden = {
+  enable = false;  # Don't install Eden yet
+  enableCache = true;  # Configure the cache first
 };
 ```
 
-#### Non-Flake Setup
+Rebuild to apply the cache configuration.
+
+**Step 2:** Now enable Eden (it will use the cache):
 ```nix
-# configuration.nix
-nix.settings = {
-    trusted-substituters = ["https://eden-flake.cachix.org"]; # Use substituters instead of trusted-substituters if desired
-    trusted-public-keys = ["eden-flake.cachix.org-1:9orwA5vFfBgb67pnnpsxBqILQlb2UI2grWt4zHHAxs8="];
+programs.eden = {
+  enable = true;  # Now install Eden
+  enableCache = true;
 };
+```
+
+Rebuild again. Eden should download from Cachix.
+
+#### Manual Setup
+
+If you know what you're doing, you can configure these two Nix settings your own way.
+
+```
+substituters = https://eden-flake.cachix.org
+trusted-public-keys = eden-flake.cachix.org-1:9orwA5vFfBgb67pnnpsxBqILQlb2UI2grWt4zHHAxs8=
 ```
 
 ## Usage
