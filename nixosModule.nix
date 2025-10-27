@@ -11,9 +11,7 @@ let
 in
 {
   options.programs.eden = {
-    enable = lib.mkEnableOption "Eden emulator" // {
-      default = true;
-    };
+    enable = lib.mkEnableOption "Eden emulator";
 
     package = lib.mkOption {
       type = lib.types.package;
@@ -21,8 +19,22 @@ in
       defaultText = lib.literalExpression "eden";
       description = "The Eden package to use";
     };
+
+    enableCache = lib.mkEnableOption ''
+      Enable the Cachex substituter for Eden packages.
+    '';
   };
-  config = lib.mkIf cfg.enable {
-    environment.systemPackages = [ cfg.package ];
-  };
+
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enableCache {
+      nix.settings = {
+        substituters = [ "https://eden-flake.cachix.org" ];
+        trusted-public-keys = [ "eden-flake.cachix.org-1:9orwA5vFfBgb67pnnpsxBqILQlb2UI2grWt4zHHAxs8=" ];
+      };
+    })
+
+    (lib.mkIf cfg.enable {
+      environment.systemPackages = [ cfg.package ];
+    })
+  ];
 }
