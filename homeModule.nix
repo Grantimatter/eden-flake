@@ -21,7 +21,7 @@ in
     };
 
     enableCache = lib.mkEnableOption ''
-      Enable the Cachex substituter for Eden packages.
+      Enable the Cachix substituter for Eden packages.
       Only enable this if your ~/.config/nix/nix.conf is managed by home-manager.
     '';
   };

@@ -80,7 +80,7 @@ programs.eden = {
 };
 ```
 
-Rebuild again. Eden should download from Cachex.
+Rebuild again. Eden should download from Cachix.
 
 #### Manual Setup
 
