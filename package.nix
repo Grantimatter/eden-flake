@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  callPackage,
   cmake,
   openssl,
   boost,
@@ -88,6 +89,20 @@ let
       qttools
       qtwebengine
       qt5compat
+    ];
+  };
+
+  oaknut = stdenv.mkDerivation rec {
+    pname = "oaknut";
+    version = "2.0.3";
+    src = fetchFromGitHub {
+      owner = "eden-emulator";
+      repo = "oaknut";
+      rev = "v${version}";
+      hash = "sha256-NWJMottKMiG6Rk2/ACNtBiYfWDsCeSGznPTqVO809P0=";
+    };
+    nativeBuildInputs = [
+      cmake
     ];
   };
 
@@ -198,7 +213,7 @@ stdenv.mkDerivation (finalAttrs: {
     frozen
   ];
 
-  buildInputs = [
+  buildInputs = lib.optional stdenv.hostPlatform.isAarch64 oaknut ++ [
     vulkan-headers
 
     qt5compat
