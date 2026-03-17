@@ -7,7 +7,7 @@
 }:
 let
   cfg = config.programs.eden;
-  edenPkg = self.outputs.packages.${pkgs.system}.default;
+  edenPkg = self.outputs.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
   options.programs.eden = {
